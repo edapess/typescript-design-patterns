@@ -1,8 +1,8 @@
 import {
   CurrentConditionsDisplay,
   StatisticsDisplay,
-} from "./Display_Observers";
-import { WeatherData } from "./WeatherData";
+} from "./DisplayObservers";
+import { WeatherData } from "./WeatherDataObserver";
 
 class WeatherStation {
   private static weatherData: WeatherData;

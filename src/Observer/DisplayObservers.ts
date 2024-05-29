@@ -1,20 +1,21 @@
-import { DisplayElemet, Observer, Subject } from "./interface";
+import { DisplayElemet, IObserver, IObservable } from "./interface";
+import { WeatherData } from "./WeatherDataObserver";
 
-export class CurrentConditionsDisplay implements Observer, DisplayElemet {
+export class CurrentConditionsDisplay implements IObserver, DisplayElemet {
   private temperature: number;
   private humidity: number;
-  private weatherData: Subject;
+  private weatherData: WeatherData;
 
-  constructor(weatherData: Subject) {
+  constructor(weatherData: WeatherData) {
     this.weatherData = weatherData;
     this.weatherData.registerObserver(this);
     this.temperature = 0;
     this.humidity = 0;
   }
 
-  update(temp: number, humidity: number, pressure: number): void {
-    this.temperature = temp;
-    this.humidity = humidity;
+  update(): void {
+    this.temperature = this.weatherData.getTemprature();
+    this.humidity = this.weatherData.getHumidity();
     this.display();
   }
 
@@ -24,18 +25,18 @@ export class CurrentConditionsDisplay implements Observer, DisplayElemet {
     );
   }
 }
-export class StatisticsDisplay implements Observer, DisplayElemet {
+export class StatisticsDisplay implements IObserver, DisplayElemet {
   private temperature: number[];
-  private weatherData: Subject;
+  private weatherData: WeatherData;
 
-  constructor(weatherData: Subject) {
+  constructor(weatherData: WeatherData) {
     this.weatherData = weatherData;
     this.weatherData.registerObserver(this);
     this.temperature = [];
   }
 
-  update(temp: number, humidity: number, pressure: number): void {
-    this.temperature.push(temp);
+  update(): void {
+    this.temperature.push(this.weatherData.getTemprature());
     this.display();
   }
   calculateAverageTemprature() {

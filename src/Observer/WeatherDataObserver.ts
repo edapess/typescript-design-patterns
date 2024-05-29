@@ -20,10 +20,10 @@ Loosely coupled designs allow us to build flexible OO systems that can handle ch
  the interdependency between objects.
  */
 
-import { Observer, Subject } from "./interface";
+import { IObservable, IObserver, AbstractObservable } from "./interface";
 
-export class WeatherData implements Subject {
-  private observers: Observer[];
+export class WeatherData implements IObservable, AbstractObservable {
+  private observers: IObserver[];
   private temperature: number;
   private humidity: number;
   private pressure: number;
@@ -34,10 +34,10 @@ export class WeatherData implements Subject {
     this.humidity = 0;
   }
 
-  public registerObserver(o: Observer) {
+  public registerObserver(o: IObserver) {
     this.observers.push(o);
   }
-  public removeObserver(o: Observer): void {
+  public removeObserver(o: IObserver): void {
     const i = this.observers.indexOf(o);
     if (i) this.observers.splice(i, 1);
   }
@@ -45,7 +45,7 @@ export class WeatherData implements Subject {
   public notifyObservers(): void {
     for (let i = 0; i < this.observers.length; i++) {
       const observer = this.observers[i];
-      observer.update(this.temperature, this.humidity, this.pressure);
+      observer.update();
     }
   }
   public measurementsChanged(): void {
@@ -61,5 +61,13 @@ export class WeatherData implements Subject {
     this.pressure = pressure;
     this.measurementsChanged();
   }
-  // other WeatherData methods here
+  public getTemprature() {
+    return this.temperature;
+  }
+  public getHumidity() {
+    return this.humidity;
+  }
+  public getPressure() {
+    return this.pressure;
+  }
 }
