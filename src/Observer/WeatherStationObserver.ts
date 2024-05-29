@@ -22,7 +22,7 @@ Loosely coupled designs allow us to build flexible OO systems that can handle ch
 
 import { IObservable, IObserver, AbstractObservable } from "./interface";
 
-export class WeatherData implements IObservable, AbstractObservable {
+export class WeatherStation implements IObservable, AbstractObservable {
   private observers: IObserver[];
   private temperature: number;
   private humidity: number;
